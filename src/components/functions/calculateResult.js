@@ -11,7 +11,8 @@ let calculateResult = (firstOperand,secondOperand,operator)=>{
             default:return;
         }
     if(result.join('') === 'Infinity'){
-        return 'error';
+        alert("division by zero")
+        return ['0'];
     }
     return result;
 }

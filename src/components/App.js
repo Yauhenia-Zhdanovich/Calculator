@@ -2,142 +2,90 @@ import React from 'react';
 import styled from "styled-components";
 import Display from "./display";
 import lengthTest from "./functions/lengthTest";
-import isNumber from "./functions/isNumber";
 import ButtonSection from "./buttonSection";
 import calculateResult from "./functions/calculateResult";
+import confirmNegative from "./functions/confirmNegative";
 
 const Main = styled.div`
   width:15rem;
   margin:0 auto;
   color:#fff;
-  border:2px solid 	#740001;
+  border:3px solid rgb(230,147,16);
+  box-shadow:inset 0 2px 8px 0 rgba(0, 0, 0, 0.15),0 6px 20px 0 rgba(0, 0, 0, 0.19);
   padding:1rem;
   border-radius:10px;
   background:#eeba30;
   margin-top:2rem;
+  font-family:Orbitron,san-serif;
 `;
 
 export default class App extends React.Component{
   constructor(props){
     super(props)
     this.state = {
-      current: [],
+      current: ['0'],
       first : [],
       operator:'',
-      second: []
+      second: [],
+      flag:false
     }
   }
   onCheckInput(value){
     let input = value;
-    if(lengthTest(input)){
-      return;
-    }
     let arr = this.state.current;
-    if(arr.length > 9){return;}
+    let firstLength = this.state.first.length;
+
     switch(input){
-      case '0': arr.push('0');this.setState({current:arr},()=>{console.log(this.state)});break;
-      case '1': arr.push('1');this.setState({current:arr},()=>{console.log(this.state)});break;
-      case '2':if(this.state.operator.length === 0){this.setState({first:[]},()=>{console.log(this.state,"after")})}; arr.push('2');this.setState({current:arr},()=>{console.log(this.state)});break;
-      case '3':if(this.state.operator.length === 0){this.setState({first:[]},()=>{console.log(this.state,"after")})};arr.push('3');this.setState({current:arr},()=>{console.log(this.state)});break;
-      case '4': arr.push('4');this.setState({current:arr},()=>{console.log(this.state)});break;
-      case '5': arr.push('5');this.setState({current:arr},()=>{console.log(this.state)});break;
-      case '6': arr.push('6');this.setState({current:arr},()=>{console.log(this.state)});break;
-      case '7': arr.push('7');this.setState({current:arr},()=>{console.log(this.state)});break;
-      case '8': arr.push('8');this.setState({current:arr},()=>{console.log(this.state)});break;
-      case '9': arr.push('9');this.setState({current:arr},()=>{console.log(this.state)});break;
-      case '.': if(arr.some((e)=>{return e ==='.'})){return;}arr.push('.');this.setState({current:arr},()=>{console.log(this.state)});break;
-      case 'CE':arr.pop();this.setState({current:arr});break;
-      case '-':
-      if(this.state.first.length === 0){
-        if(isNumber(arr[arr-1])){
-          this.setState({operator:'-',first:arr,current:[]},
-            ()=>{console.log(this.state)})
-        };
-      }else if(this.state.first.length!==0 && arr.length === 0){
-          if(isNumber(arr[arr-1])){
-            this.setState({operator:'-',second:arr,current:[]},
-              ()=>{console.log(this.state)})
-        };
-      }else{
-            this.setState({second:arr},()=>{
-              let result = calculateResult(this.state.first,this.state.second,this.state.operator);
-              console.log(result);
-              this.setState({first:result,current:[],second:[],operator:'-'},()=>{console.log(this.state)})
-          })
-      };break;
+      case '.': if(arr.some((e)=>{return e ==='.'})){return;}arr.push('.');this.setState({current:arr});break;
+      case 'C':arr.pop();this.setState({current:arr});break;
+      case 'AC':this.setState({current:['0'],operator:'',first:[],second:[],flag:false});break;
       case '+':
-      if(this.state.first.length === 0){
-        if(isNumber(arr[arr-1])){
-          this.setState({operator:'+',first:arr,current:[]},
-            ()=>{console.log(this.state)})
-        };
-      }else if(this.state.first.length!==0 && arr.length === 0){
-          if(isNumber(arr[arr-1])){
-            this.setState({operator:'+',second:arr,current:[]},
-              ()=>{console.log(this.state)})
-        };
-      }else{
-        this.setState({second:arr},()=>{
-          let result = calculateResult(this.state.first,this.state.second,'+');
-          console.log(result);
-          this.setState({first:result,current:[],second:[],operator:'+'},()=>{console.log(this.state)})
-      })
-      };break;
-      case '*': if(this.state.first.length === 0){
-        if(isNumber(arr[arr-1])){
-          this.setState({operator:'*',first:arr,current:[]},
-            ()=>{console.log(this.state)})
-        };
-      }else if(this.state.first.length!==0 && arr.length === 0){
-          if(isNumber(arr[arr-1])){
-            this.setState({operator:'*',second:arr,current:[]},
-              ()=>{console.log(this.state)})
-        };
-      }else{
-        this.setState({second:arr},()=>{
-          let result = calculateResult(this.state.first,this.state.second,'*');
-          console.log(result);
-          this.setState({first:result,current:[],second:[],operator:'*'},()=>{console.log(this.state)})
-      })
-      };break;
+      case '*':
       case '/':
-      if(this.state.first.length === 0){
-        if(isNumber(arr[arr-1])){
-          this.setState({operator:'/',first:arr,current:[]},
-            ()=>{console.log(this.state)})
-        };
-      }else if(this.state.first.length!==0 && arr.length === 0){
-          if(isNumber(arr[arr-1])){
-            this.setState({operator:'/',second:arr,current:[]},
-              ()=>{console.log(this.state)})
-        };
-      }else{
-        this.setState({second:arr},()=>{
-          let result = calculateResult(this.state.first,this.state.second,'/');
-          console.log(result);
-          this.setState({first:result,current:[],second:[],operator:'/'},()=>{console.log(this.state)})
-      })
+      case '-':
+        if(confirmNegative(firstLength,input,arr)){
+          arr.length = 0;
+          arr.push('-');
+          this.setState({current:arr});
+        }else  if(firstLength === 0){
+            this.setState({operator:input,first:arr,current:[],flag:false})
+          }else if(firstLength!==0 && arr.length === 0){
+              this.setState({operator:input,second:arr,current:[],flag:false})
+            }else{
+           this.setState({second:arr},()=>{
+            let result = calculateResult(this.state.first,this.state.second,this.state.operator);
+            this.setState({first:result,current:[],second:[],operator:input,flag:true})
+        })
       };break;
       case '=':
-      if(this.state.first.length === 0){
-        this.setState({first:arr,current:[]},()=>{
-          console.log(this.state,'from ==')
-        });
+      if(firstLength === 0){
+        this.setState({first:arr,current:[]});
         return;
       }
         this.setState({second:arr},()=>{
             let result = calculateResult(this.state.first,this.state.second,this.state.operator);
-            console.log(result);
-            this.setState({first:result,current:[],second:[],operator:''},()=>{console.log(this.state)})
+            this.setState({first:result,current:[],second:[],operator:''})
         })
           break;
-      default:return;
+      default:
+        if(lengthTest(input) || arr.length > 9){
+          return;
+        }
+        if(this.state.operator.length === 0){
+          this.setState({first:[]})
+        };
+        if(arr[0] === '0' && arr[1]!=='.'){
+          arr.length = 0;
+        }
+        arr.push(input);
+        this.setState({current:arr,flag:false});
+      return;
     }
   }
   render(){
     return(
       <Main>
-        <Display current={this.state.current} operator={this.state.operator} first={this.state.first} second={this.state.second}/>
+        <Display current={this.state.current} operator={this.state.operator} first={this.state.first} second={this.state.second} flag={this.state.flag}/>
         <ButtonSection onClickHandler={this.onCheckInput.bind(this)}/>
       </Main>)
   }

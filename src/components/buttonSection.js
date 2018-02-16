@@ -24,7 +24,6 @@ const EqualButton = Button.extend`
   grid-column:4/4;
   grid-row:4/6;
 `;
-
 export default class ButtonSection extends React.Component{
     onClickHandle(e){
         this.props.onClickHandler(e.target.innerHTML)
@@ -32,8 +31,8 @@ export default class ButtonSection extends React.Component{
     render(){
         return(
             <Wrapper onClick={this.onClickHandle.bind(this)}>
+                <Button>AC</Button>
                 <Button>C</Button>
-                <Button>CE</Button>
                 <Button>/</Button>
                 <Button>*</Button>
                 <Button>7</Button>
