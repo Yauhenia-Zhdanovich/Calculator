@@ -3,26 +3,22 @@ import styled from "styled-components";
 
 const StyledDisplay = styled.div`
   height:80px;
-  background:#fff5ee;
+  background:#fcf5ee;
   border-radius:10px;
   margin-bottom:1rem;
   color:#000;
-  font-size:3rem;
   text-align:right;
   display:grid;
   justify-items:end;
-  font-size:2.5rem;
+  font-size:1.8rem;
+  padding:0.2rem;
+  border:3px solid rgb(230,147,16);
 `;
-const MinusDisplay = styled.div`
-  background:blue;
-  grid-column:1/2;
-  grid-row:1/4;
-  border-radius:10px 0 0 10px; 
-`;
+
 const CurrentInputDisplay = styled.div`
   grid-column:2/6;
   grid-row:1/3;
-  border-radius:0 10px 0 0; 
+  border-radius:0 10px 0 0;
 `;
 const EquationDisplay = styled.div`
   grid-column:2/6;
@@ -31,19 +27,26 @@ const EquationDisplay = styled.div`
 export default class Display extends React.Component{
     render(){
       let currentInput = '';
-      this.props.current.join('');
-      if(this.props.current.length === 0 && this.props.second.length === 0){
-        currentInput = this.props.first
-      }else if(this.props.second.length !== 0){
-        currentInput = this.props.second
-      }else {
-        currentInput = this.props.current;
+      let first = '';
+      let second = '';
+      let arr = this.props.first;
+      if(arr.length >10){
+        arr.length = 10;
       }
+      first = arr.join('');
+      if(this.props.first.length !== 0){
+        second = this.props.current.join('');
+      }
+      if(this.props.flag || this.props.current.length === 0){
+        currentInput = this.props.first.join('');
+      }else{
+        currentInput = this.props.current.join('');
+      }
+
       return(
         <StyledDisplay>
-            <MinusDisplay></MinusDisplay>
             <CurrentInputDisplay>{currentInput}</CurrentInputDisplay>
-            <EquationDisplay>{this.props.first}{this.props.operator}{this.props.second}</EquationDisplay>
+            <EquationDisplay>{first}{this.props.operator}{second}</EquationDisplay>
           </StyledDisplay>
       )
     }
