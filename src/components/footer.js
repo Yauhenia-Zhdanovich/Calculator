@@ -17,7 +17,6 @@ const Link = styled.a`
         color:#eeba30;
     }
 `;
-//background:#ae0001;
 let Footer = ()=>{
     return (
         <NiceFooter>created by <Link href='#'>&#60;Euhenia Zhdanovich&#62;</Link></NiceFooter>
