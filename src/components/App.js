@@ -1,5 +1,4 @@
 import React from 'react';
-import Footer from './footer';
 import CalculatorSection from './calculatorSection';
 import styled from 'styled-components';
 
@@ -14,7 +13,6 @@ let App = ()=>{
             <Div>
                 <CalculatorSection/>
             </Div>
-            <Footer/>
         </div>
     )
 }
