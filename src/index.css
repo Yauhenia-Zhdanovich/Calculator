@@ -4,6 +4,7 @@ body{
   font-size:17px;
   background:#4f372d;
   padding:0;
+  border: 0;
 }
 @font-face {
   font-family: 'Orbitron';
